@@ -1,0 +1,27 @@
+<div>
+    <ng-container *ngIf="type == fieldType.text">
+        <mat-form-field class="example-partial-width" floatPlaceholder="never" floatLabel="never">
+            <input matInput type="text" [placeholder]="placeholder" [(ngModel)]="val" (keyup)="sendValue()">
+        </mat-form-field>
+    </ng-container>
+    <ng-container *ngIf="type == fieldType.select">
+        <mat-form-field class="example-partial-width" floatPlaceholder="never" floatLabel="never">
+            <mat-select [placeholder]="placeholder" (selectionChange)="sendValue()" [(ngModel)]="val">
+                <mat-option *ngFor="let option of options" [value]="option.val">
+                    {{option.text}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </ng-container>
+    <ng-container *ngIf="type == fieldType.date">
+        <mat-form-field class="example-partial-width" floatPlaceholder="never" floatLabel="never">
+            <input matInput [matDatepicker]="picker" (dateChange)=sendValue() [(ngModel)]="val"
+                [placeholder]="placeholder">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+    </ng-container>
+    <ng-container *ngIf="type == fieldType.checkbox">
+        <mat-checkbox (change)=sendValue() [(ngModel)]="val" [checked]="val">{{text}}</mat-checkbox>
+    </ng-container>
+</div>

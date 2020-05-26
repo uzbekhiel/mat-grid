@@ -1,0 +1,40 @@
+<div>
+    <ng-container *ngIf="type == columnType.date">
+        {{ val | date : format }}
+    </ng-container>
+    <ng-container *ngIf="type == columnType.number">
+        {{ val | number : format }}
+    </ng-container>
+    <ng-container *ngIf="type == columnType.percent">
+        {{ val | percent : format }}
+    </ng-container>
+    <ng-container *ngIf="type == columnType.currency">
+        {{ val | currency : format }}
+    </ng-container>
+    <ng-container *ngIf="type == columnType.upper">
+        {{ val | uppercase }}
+    </ng-container>
+    <ng-container *ngIf="type == columnType.lower">
+        {{ val | lowercase }}
+    </ng-container>
+    <ng-container *ngIf="type == columnType.titlecase">
+        {{ val | titlecase }}
+    </ng-container>
+    <ng-container *ngIf="type == columnType.flag">
+        <ng-container *ngIf="flag.type == 'text'">
+            <span *ngFor="let item of flag.items">
+                <ng-container *ngIf="val==item.value">{{item.text}}</ng-container>
+            </span>
+            <ng-container *ngIf="!valueIsFlag">{{flag.default.text}}</ng-container>
+        </ng-container>
+        <ng-container *ngIf="flag.type == 'icon'">
+            <span *ngFor="let item of flag.items">
+                <mat-icon *ngIf="val==item.value">{{item.text}}</mat-icon>
+            </span>
+            <mat-icon *ngIf="!valueIsFlag">{{flag.default.text}}</mat-icon>
+        </ng-container>
+    </ng-container>
+    <ng-container *ngIf="type == columnType.text">
+        {{ val }}
+    </ng-container>
+</div>
