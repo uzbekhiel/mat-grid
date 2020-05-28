@@ -1,7 +1,7 @@
 import { Action } from './action.model';
 import { Field } from './field.model';
 import { Flag } from './flag.model';
-import { ColumnTypeEnum } from '../../enums/column-type.enum';
+import { ColumnTypeEnum } from '../enums/column-type.enum';
 
 export interface GridColumns {
     header: string;
@@ -13,6 +13,6 @@ export interface GridColumns {
     hasPermission?: boolean;
     hasHtml?: boolean;
     actions?: Action[];
-    fields?: Field[];
+    field?: Field;
     flags?: Flag;
 }

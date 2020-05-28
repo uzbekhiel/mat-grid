@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { FieldTypeEnum } from 'src/app/enums/field-types.enum';
+import { FieldTypeEnum } from 'src/app/mat-grid/enums/field-types.enum';
 
 @Component({
   selector: 'app-input',

@@ -1,5 +1,5 @@
 import { Option } from './option.model';
-import { FieldTypeEnum } from '../../enums/field-types.enum';
+import { FieldTypeEnum } from '../enums/field-types.enum';
 
 export interface Field {
     type: FieldTypeEnum;
