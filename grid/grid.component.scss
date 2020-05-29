@@ -30,16 +30,21 @@ mat-header-cell{
   border-bottom: 1px solid #CCC;
 
   &:focus {
-    outline: none;    
+    outline: none;
+  }
+}
+
+@media only screen and (max-width: 768px){
+  .table-responsive {
+    display: inline-block;
   }
 }
 
 .table-responsive {
-  display: block;
   width: 100%;
   overflow-x: auto;
   border-collapse: collapse;
-
+  
   .mat-table {
       width: 100%;
       max-width: 100%;

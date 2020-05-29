@@ -1,3 +1,3 @@
 export enum FieldTypeEnum {
-    text, select, date, checkbox
+    text, select, date, checkbox, toggle
 }

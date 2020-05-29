@@ -22,16 +22,25 @@
     </ng-container>
     <ng-container *ngIf="type == columnType.flag">
         <ng-container *ngIf="flag.type == 'text'">
-            <span *ngFor="let item of flag.items">
-                <ng-container *ngIf="val==item.value">{{item.text}}</ng-container>
+            <span *ngFor="let item of flag.items" [ngStyle]="{color: item.color !== undefined ? item.color : '' }">
+                <ng-container *ngIf="val==item.value">
+                    {{item.text | translate}}</ng-container>
             </span>
-            <ng-container *ngIf="!valueIsFlag">{{flag.default.text}}</ng-container>
+            <ng-container *ngIf="!valueIsFlag">
+                <span [ngStyle]="{color: item.color !== undefined ? item.color : '' }">
+                    {{flag.default.text | translate}}
+                </span>
+            </ng-container>
         </ng-container>
         <ng-container *ngIf="flag.type == 'icon'">
             <span *ngFor="let item of flag.items">
-                <mat-icon *ngIf="val==item.value">{{item.text}}</mat-icon>
+                <mat-icon *ngIf="val==item.value" [ngStyle]="{color: item.color !== undefined ? item.color : '' }"
+                    [matTooltip]="item.text">
+                    {{item.icon}}</mat-icon>
             </span>
-            <mat-icon *ngIf="!valueIsFlag">{{flag.default.text}}</mat-icon>
+            <mat-icon *ngIf="!valueIsFlag" [ngStyle]="{color: item.color !== undefined ? item.color : '' }"
+                [matTooltip]="flag.default.text">
+                {{flag.default.text}}</mat-icon>
         </ng-container>
     </ng-container>
     <ng-container *ngIf="type == columnType.text">

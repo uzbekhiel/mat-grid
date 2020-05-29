@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ColumnTypeEnum } from 'src/app/mat-grid/enums/column-type.enum';
+import { ColumnTypeEnum } from '../enums/column-type.enum';
 
 @Component({
   selector: 'app-column-data',

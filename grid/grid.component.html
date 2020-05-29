@@ -5,42 +5,14 @@
     [matSortActive]="sortActiveColumn" [matSortDirection]="sortDefaultDirection" [matSortStart]="sortDefaultDirection"
     (matSortChange)="sortData($event)" matSortDisableClear>
     <ng-container *ngFor="let column of columns">
-        <ng-container *ngIf="column.isModelProperty" [matColumnDef]="column.property">
-            <ng-container *ngIf="hasSort">
-                <mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="{'hide': !column.hasPermission}">
-                    {{ column.header }}
-                </mat-header-cell>
-            </ng-container>
-            <ng-container *ngIf="!hasSort">
-                <mat-header-cell *matHeaderCellDef [ngClass]="{'hide': !column.hasPermission}">
-                    {{ column.header }}
-                </mat-header-cell>
-            </ng-container>
-            <ng-container *ngIf="column.hasHtml">
-                <mat-cell *matCellDef="let row let i = index;" [ngClass]="{'hide': !column.hasPermission}">
-                    <app-input [ngClass]="{'fieldCheckbox': column.field.type == 'checkbox'}" [type]="column.field.type"
-                        [val]="row[column.property]" [defaultValue]="column.field.defaultValue"
-                        [options]="column.field.options" [text]="column.field.text"
-                        [placeholder]="column.field.placeholder"
-                        (value)="getvalue($event,i,column.field.type, column.property)">
-                    </app-input>
-                </mat-cell>
-            </ng-container>
-            <ng-container *ngIf="!column.hasHtml">
-                <mat-cell *matCellDef="let row" [ngClass]="{'hide': !column.hasPermission}">
-                    <app-column-data [val]="row[column.property]" [type]="column.type" [format]="column.format"
-                        [flag]="column.flag">
-                    </app-column-data>
-                </mat-cell>
-            </ng-container>
-        </ng-container>
-        <ng-container *ngIf="!column.isModelProperty" [matColumnDef]="column.property">
+        <ng-container [matColumnDef]="column.property">
             <ng-container *ngIf="column.property == 'actions'">
-                <mat-header-cell *matHeaderCellDef
+                <mat-header-cell *matHeaderCellDef [ngStyle]="{ 'width': column.size + '%' }"
                     [ngClass]="{'hide': visibleColumnActions.length == 0 && !actionsVisible}">
                     {{ column.header }}
                 </mat-header-cell>
                 <mat-cell class="actions-cell" *matCellDef="let row" fxFlexAlign="stretch"
+                    [ngStyle]="{ 'width': column.size + '%' }"
                     [ngClass]="{'hide': visibleColumnActions.length == 0 && !actionsVisible}">
                     <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu"
                         [disabled]="visibleColumnActions.length == 0 && actionsVisible">
@@ -57,26 +29,31 @@
                 </mat-cell>
             </ng-container>
             <ng-container *ngIf="hasSort">
-                <mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="{'hide': !column.hasPermission}">
-                    {{ column.header }}
+                <mat-header-cell *matHeaderCellDef mat-sort-header [ngStyle]="{ 'width': column.size + '%' }"
+                    [ngClass]="{'hide': column.hasPermission !== undefined ?  !column.hasPermission : !hasPermission}">
+                    {{ column.header | translate }}
                 </mat-header-cell>
             </ng-container>
             <ng-container *ngIf="!hasSort">
-                <mat-header-cell *matHeaderCellDef [ngClass]="{'hide': !column.hasPermission}">
-                    {{ column.header }}
+                <mat-header-cell *matHeaderCellDef [ngStyle]="{ 'width': column.size + '%' }"
+                    [ngClass]="{'hide': column.hasPermission !== undefined ?  !column.hasPermission : !hasPermission}">
+                    {{ column.header | translate }}
                 </mat-header-cell>
             </ng-container>
             <ng-container *ngIf="column.hasHtml">
-                <mat-cell *matCellDef="let row; let i = index;" [ngClass]="{'hide': !column.hasPermission}">
-                    <app-input [type]="column.field.type" [ngClass]="{'fieldCheckbox': column.field.type == 'checkbox'}"
+                <mat-cell *matCellDef="let row let i = index;" [ngStyle]="{ 'width': column.size + '%' }"
+                    [ngClass]="{'hide': column.hasPermission !== undefined ?  !column.hasPermission : !hasPermission}">
+                    <app-input [ngClass]="{'fieldCheckbox': column.field.type == 'checkbox'}" [type]="column.field.type"
+                        [val]="row[column.property]" [defaultValue]="column.field.defaultValue"
                         [options]="column.field.options" [text]="column.field.text"
-                        [defaultValue]="column.field.defaultValue" [placeholder]="column.field.placeholder"
+                        [placeholder]="column.field.placeholder"
                         (value)="getvalue($event,i,column.field.type, column.property)">
                     </app-input>
                 </mat-cell>
             </ng-container>
             <ng-container *ngIf="!column.hasHtml">
-                <mat-cell *matCellDef="let row" [ngClass]="{'hide': !column.hasPermission}">
+                <mat-cell *matCellDef="let row" [ngStyle]="{ 'width': column.size + '%' }"
+                    [ngClass]="{'hide': column.hasPermission !== undefined ?  !column.hasPermission : !hasPermission}">
                     <app-column-data [val]="row[column.property]" [type]="column.type" [format]="column.format"
                         [flag]="column.flag">
                     </app-column-data>

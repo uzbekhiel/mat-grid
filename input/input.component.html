@@ -7,7 +7,7 @@
     <ng-container *ngIf="type == fieldType.select">
         <mat-form-field class="example-partial-width" floatPlaceholder="never" floatLabel="never">
             <mat-select [placeholder]="placeholder" (selectionChange)="sendValue()" [(ngModel)]="val">
-                <mat-option *ngFor="let option of options" [value]="option.val">
+                <mat-option *ngFor="let option of options" [value]="option.value">
                     {{option.text}}
                 </mat-option>
             </mat-select>
@@ -23,5 +23,8 @@
     </ng-container>
     <ng-container *ngIf="type == fieldType.checkbox">
         <mat-checkbox (change)=sendValue() [(ngModel)]="val" [checked]="val">{{text}}</mat-checkbox>
+    </ng-container>
+    <ng-container *ngIf="type == fieldType.toggle">
+        <mat-slide-toggle (change)=sendValue() [(ngModel)]="val" [checked]="val">{{text}}</mat-slide-toggle>
     </ng-container>
 </div>

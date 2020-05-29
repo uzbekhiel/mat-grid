@@ -7,12 +7,12 @@ export interface GridColumns {
     header: string;
     property: string;
     type: ColumnTypeEnum;
+    size: number;
     visible?: boolean;
     format?: string;
-    isModelProperty?: boolean;
     hasPermission?: boolean;
     hasHtml?: boolean;
     actions?: Action[];
     field?: Field;
-    flags?: Flag;
+    flag?: Flag;
 }

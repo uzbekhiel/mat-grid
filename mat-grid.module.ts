@@ -12,6 +12,8 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { TranslateModule } from '@ngx-translate/core';
 import { GridComponent } from './grid/grid.component';
 import { InputComponent } from './input/input.component';
@@ -34,10 +36,13 @@ import { ColumnDataComponent } from './column-data/column-data.component';
     MatButtonModule,
     CommonModule,
     FormsModule,
-    TranslateModule
+    TranslateModule,
+    MatTooltipModule,
+    MatSlideToggleModule
   ],
   exports: [
-    GridComponent
+    GridComponent,
+    TranslateModule
   ],
   entryComponents: [InputComponent]
 })

@@ -4,6 +4,7 @@ import {
 } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { SortOrder } from '../models/sort-order';
+import { SortDirection } from '@angular/material/sort';
 
 @Component({
   selector: 'mat-grid',
@@ -15,6 +16,8 @@ export class GridComponent<T> implements OnInit {
   public selectedRowIndex: number;
   public sortedData: SortOrder = new SortOrder();
   private sortedColumns = [];
+  private isVisible = true;
+  public hasPermission = true;
   @Input() sortDefaultDirection = 'asc';
   @Input() sortActiveColumn = '';
   @Input() columns = [];
@@ -41,19 +44,24 @@ export class GridComponent<T> implements OnInit {
   constructor(private componentFactoryResolver: ComponentFactoryResolver) { }
 
   ngOnInit() {
-    this.hasPagination = this.hasPagination != null ? this.hasPagination : this.pageSize <= this.numberOfItems;
     if (this.sortActiveColumn != '') {
       this.sortedColumns.push(this.sortActiveColumn);
     }
   }
 
   get visibleColumns() {
-    return this.columns.filter(column => column.visible).map(column => column.property);
+    return this.columns.filter(column => column.visible !== undefined ? column.visible : this.isVisible)
+      .map(column => column.property);
   }
 
   get visibleColumnActions() {
     const columnActions = this.columns.filter(column => column.property == 'actions').map(column => column)[0];
-    return columnActions.actions.filter(action => action.visible).map(action => action);
+    if (columnActions.actions !== undefined) {
+      return columnActions.actions.filter(action => action.visible !== undefined ? action.visible : this.isVisible).map(action => action);
+    }
+    else {
+      return [];
+    }
   }
 
   public getHighlight(id) {
