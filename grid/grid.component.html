@@ -9,7 +9,7 @@
             <ng-container *ngIf="column.property == 'actions'">
                 <mat-header-cell *matHeaderCellDef [ngStyle]="{ 'width': column.size + '%' }"
                     [ngClass]="{'hide': visibleColumnActions.length == 0 && !actionsVisible}">
-                    {{ column.header }}
+                    {{ column.header | translate }}
                 </mat-header-cell>
                 <mat-cell class="actions-cell" *matCellDef="let row" fxFlexAlign="stretch"
                     [ngStyle]="{ 'width': column.size + '%' }"
@@ -54,8 +54,10 @@
             <ng-container *ngIf="!column.hasHtml">
                 <mat-cell *matCellDef="let row" [ngStyle]="{ 'width': column.size + '%' }"
                     [ngClass]="{'hide': column.hasPermission !== undefined ?  !column.hasPermission : !hasPermission}">
-                    <app-column-data [val]="row[column.property]" [type]="column.type" [format]="column.format"
-                        [flag]="column.flag">
+                    <app-column-data [val]="row[column.property]"
+                        [type]="column.type === undefined ? undefined : column.type.columnType"
+                        [format]="column.type === undefined ? undefined : column.type.format"
+                        [flag]="column.type === undefined ? undefined : column.type.flag">
                     </app-column-data>
                 </mat-cell>
             </ng-container>
