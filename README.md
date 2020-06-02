@@ -42,7 +42,7 @@ Their use is done as follows:
 		        } 
         },] as  GridColumns[];
         
-Tirando o tipo flag, explicado mais a frente,  os outros tipos podem receber um formato atribuído na propriedade `format`, segindo as configurações para o uso de pipes listado na API do angular (see [Pipes API List](https://angular.io/api?type=pipe))
+Apart from the flag type, explained later, the other types can receive a format assigned in the `format` property, following the settings for the use of pipes listed in the angular API (see [Pipes API List](https://angular.io/api?type=pipe))
 [Common types demo here](https://stackblitz.com/edit/type-example)
 
 The flag type is a special type created specifically for columns that contain enumerated data, such as that of domain tables.
@@ -64,7 +64,7 @@ The usage structure is similar to that used by the other types but depends on an
 		
 [Flag type demo here](https://stackblitz.com/edit/flag-example)
 
-#### Tamanho
+#### Size
 You can change the basic size assumed by the columns, setting a value that will be assumed as a percentage by the table as follows:
 
     tableDataSource = dataSource;
