@@ -43,7 +43,7 @@
                 {{flag.default.text}}</mat-icon>
         </ng-container>
     </ng-container>
-    <ng-container *ngIf="type == columnType.text">
+    <ng-container *ngIf="type == columnType.text || type === undefined">
         {{ val }}
     </ng-container>
 </div>
