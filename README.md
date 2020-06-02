@@ -1,29 +1,76 @@
 # mat-grid
 
-## about
-This project came from the necesssity of having some component to render a grid with a couple of features based on material design for angular.
+## About
+This project came from a need to have a configurable grid solution to streamline the development of GRUDs.
 
-### requisites
-a project using:
+## Requirements
+A project with:
+  - angular v8.0 or greater;
+  - material design for angular v8.2.3 or higher
 
- - angular minimum ver. 8 or more;
- - material design ver. 8 or more;
+### Usage:
+#### Basic
+To use the grid, a simple configuration with this code structure is enough:
 
-### Base configuration
-the configuration depends on the settings the dataSource property and the columns, made by Gridcolumn model, included on project.
+    tableDataSource = dataSource;
+    public  columns: GridColumns[] = [
+		    { 
+			    header:  string, 
+			    property:  string 
+		   },
+    ] as  GridColumns[];
 
-#### GridColumns
+Where `datasource` is any type of structure used as your application's data source as an` array` or even a `MatTableDataSource`. (see [material table API](https://material.angular.io/components/table/overview) 
 
-|Property        |usage                                       |
-|----------------|--------------------------------------------|
-|header: *string*  |the name that appers on header of the column|
-|property: *string*|name of property from datasource            |
-|type: *string*| type of data for the column |
-|visible?: *boolean*| sets if column is visible |
-|format?: *string*| format to show data on column*, when it does not have has Html flag. |
-|isModelProperty?: *boolean*| sets if data is from model data source or not |
-|hasPermission?: *boolean*| sets if some kind of permission to access data is necessary. If false hides column. |
-|hasHtml?: *boolean*| sets if data is showned on a input based on type set on fields property |
-|field?: *Field*| field displayed when using the hasHtml flag  |
-|actions?: *Action[]*| array of actions that can be done to the data on the row  |
-|flags?: *Flag[]*| array of flags of an enumerator type  |
+[Demo here](https://stackblitz.com/edit/base-example)
+
+#### Types
+The grid columns accept some types already mapped:
+
+    date, number, percent, currency, upper, lower, titlecase, text, flag
+
+All are mapped in the enumerator `ColumnTypeEnum`.
+Their use is done as follows:
+
+    columns: GridColumns[] = [
+        { 
+	        header:  string, 
+	        property:  string, 
+	        type:{ 
+		        columnType: ColumnTypeEnum
+		        format?: string 
+		        } 
+        },] as  GridColumns[];
+        
+Tirando o tipo flag, explicado mais a frente,  os outros tipos podem receber um formato atribuído na propriedade `format`, segindo as configurações para o uso de pipes listado na API do angular (see [Pipes API List](https://angular.io/api?type=pipe))
+[Common types demo here](https://stackblitz.com/edit/type-example)
+
+The flag type is a special type created specifically for columns that contain enumerated data, such as that of domain tables.
+The usage structure is similar to that used by the other types but depends on another configuration property called `flag`, as shown below:
+    
+    columns: GridColumns[] = [
+       { 
+	       header:  string, 
+	       property:  string, 
+	       type:{ 
+			       columnType: ColumnTypeEnum, 
+			       flag: { 
+					       type:  string, 
+					       items: [
+									{ text:  string, value:  number },] 
+							} 
+				} 
+		},] as  GridColumns[];
+		
+[Flag type demo here](https://stackblitz.com/edit/flag-example)
+
+#### Tamanho
+You can change the basic size assumed by the columns, setting a value that will be assumed as a percentage by the table as follows:
+
+    tableDataSource = dataSource;
+    	public  columns: GridColumns[] = [
+            { header:  string, property:  string, size: number },
+        ] as  GridColumns[];
+
+Where size will be the percentage value that will be assumed by css when drawing the grid.
+[Demo here](https://stackblitz.com/edit/size-example)
