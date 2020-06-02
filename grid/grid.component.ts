@@ -4,7 +4,6 @@ import {
 } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { SortOrder } from '../models/sort-order';
-import { SortDirection } from '@angular/material/sort';
 
 @Component({
   selector: 'mat-grid',
@@ -69,7 +68,8 @@ export class GridComponent<T> implements OnInit {
   }
 
   public getvalue(event: any, index: number, type: string, property: string) {
-    this.columnValues.emit({ index, val: event, type, property });
+    this.dataSource[index][property] = event;
+    this.columnValues.emit({ index, value: event, type, property, item: this.dataSource[index] });
   }
 
   public pageChange(event: any) {
