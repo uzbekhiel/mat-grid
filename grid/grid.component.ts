@@ -19,22 +19,26 @@ export class GridComponent<T> implements OnInit {
   public hasPermission = true;
   @Input() sortDefaultDirection = 'asc';
   @Input() sortActiveColumn = '';
+  @Input() organizerName = '';
   @Input() columns = [];
   @Input() dataSource: T | null;
-  @Input() dropActions = [];
+  @Input() gridActions = [];
   @Input() pageSize = 0;
   @Input() numberOfItems = 0;
   @Input() hasSort = false;
+  @Input() dropMenu = true;
+  @Input() searchVisible = false;
   @Input() hasPagination = null;
   @Input() title = '';
+  @Input() noDataText = '';
   @Input() pageSizeOptions = [5, 10, 25, 100];
   @Input('actionsMenuAwaysVisible') actionsVisible = false;
-
 
   @Output() dropActionsFn: EventEmitter<any> = new EventEmitter();
   @Output() columnActionsButtonClick: EventEmitter<any> = new EventEmitter();
   @Output() loadingGridFn = new EventEmitter();
-  @Output() columnValues = new EventEmitter();
+  @Output() columnValue = new EventEmitter();
+  @Output('search') searchData = new EventEmitter();
 
   displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
 
@@ -69,7 +73,7 @@ export class GridComponent<T> implements OnInit {
 
   public getvalue(event: any, index: number, type: string, property: string) {
     this.dataSource[index][property] = event;
-    this.columnValues.emit({ index, value: event, type, property, item: this.dataSource[index] });
+    this.columnValue.emit({ index, value: event, type, property, item: this.dataSource[index] });
   }
 
   public pageChange(event: any) {
@@ -87,5 +91,9 @@ export class GridComponent<T> implements OnInit {
       this.sortedData.property = event.active;
       this.loadingGridFn.emit({ sort: this.sortedData, paginator: this.paginator });
     }
+  }
+
+  public search(event: any) {
+    this.searchData.emit({ text: event });
   }
 }

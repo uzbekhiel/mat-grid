@@ -73,3 +73,17 @@ mat-header-cell{
   }
 }
 
+::ng-deep .mat-menu-panel{
+  min-width: initial!important;
+}
+
+.drop-menu-no-names mat-icon{
+  margin:0;
+}
+
+.no-result {
+  padding: 40px 0;
+  font-size: 18px;
+  text-align: center;
+}
+

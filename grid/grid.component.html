@@ -1,72 +1,126 @@
-<mat-paginator class="paginator" (page)="pageChange($event)" *ngIf="hasPagination" [pageSizeOptions]="pageSizeOptions"
-    [length]="numberOfItems" [pageSize]="pageSize"></mat-paginator>
-<table mat-table [dataSource]="dataSource"
-    class="search-table table-hover table-striped table-condensed table-bordered table table-responsive" matSort
-    [matSortActive]="sortActiveColumn" [matSortDirection]="sortDefaultDirection" [matSortStart]="sortDefaultDirection"
-    (matSortChange)="sortData($event)" matSortDisableClear>
-    <ng-container *ngFor="let column of columns">
-        <ng-container [matColumnDef]="column.property">
-            <ng-container *ngIf="column.property == 'actions'">
-                <mat-header-cell *matHeaderCellDef [ngStyle]="{ 'width': column.size + '%' }"
-                    [ngClass]="{'hide': visibleColumnActions.length == 0 && !actionsVisible}">
+<app-title name="{{title | translate}}" [columns]="columns" [searchVisible]="searchVisible"
+    (filterChange)="search($event)" [dropMenu]="gridActions.length == 0 && dropMenu">
+    <div class="actions" fxFlexAlign="center" *ngIf="gridActions.length > 0">
+        <mat-menu #columnFilter="matMenu" yPosition="below" xPosition="after">
+            <button class="checkbox-item mat-menu-item" *ngFor="let column of columns"
+                (click)="toggleColumnVisibility(column, $event)">
+                <mat-checkbox [(ngModel)]="column.visible" class="checkbox" #checkbox (click)="$event.stopPropagation()"
+                    fxLayoutAlign="left">
                     {{ column.header | translate }}
-                </mat-header-cell>
-                <mat-cell class="actions-cell" *matCellDef="let row" fxFlexAlign="stretch"
-                    [ngStyle]="{ 'width': column.size + '%' }"
-                    [ngClass]="{'hide': visibleColumnActions.length == 0 && !actionsVisible}">
-                    <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu"
-                        [disabled]="visibleColumnActions.length == 0 && actionsVisible">
-                        <mat-icon>more_horiz</mat-icon>
+                </mat-checkbox>
+            </button>
+        </mat-menu>
+        <mat-menu #appMenu="matMenu">
+            <ng-container *ngFor="let item of gridActions">
+                <ng-container *ngIf="item.type === 'organizer'">
+                    <button class="action-list-item" [ngClass]="{'drop-menu-no-names': item.name === '' }" mat-menu-item
+                        [disabled]="item.hasNoPermission" [matMenuTriggerFor]="columnFilter">
+                        <mat-icon>{{item.icon}}</mat-icon>
+                        <span>{{item.name | translate}} </span>
                     </button>
-                    <mat-menu #actionsMenu="matMenu" yPosition="below" xPosition="before">
-                        <button class="action-list-item" type="button" *ngFor="let item of visibleColumnActions"
-                            [disabled]="!item.hasPermission"
-                            (click)="columnActionsButtonClick.emit({name:item.name, item: row})" mat-menu-item>
-                            <mat-icon>{{item.icon}}</mat-icon>
-                            <span>{{ item.name }}</span>
-                        </button>
-                    </mat-menu>
-                </mat-cell>
+                </ng-container>
+                <ng-container *ngIf="item.type !== 'organizer'">
+                    <button class="action-list-item" [ngClass]="{'drop-menu-no-names': item.name === '' }" mat-menu-item
+                        [disabled]="item.hasNoPermission" (click)="dropActionsFn.emit(item.name)">
+                        <mat-icon>{{item.icon}}</mat-icon>
+                        <span>{{item.name | translate}} </span>
+                    </button>
+                </ng-container>
             </ng-container>
-            <ng-container *ngIf="hasSort">
-                <mat-header-cell *matHeaderCellDef mat-sort-header [ngStyle]="{ 'width': column.size + '%' }"
-                    [ngClass]="{'hide': column.hasPermission !== undefined ?  !column.hasPermission : !hasPermission}">
-                    {{ column.header | translate }}
-                </mat-header-cell>
-            </ng-container>
-            <ng-container *ngIf="!hasSort">
-                <mat-header-cell *matHeaderCellDef [ngStyle]="{ 'width': column.size + '%' }"
-                    [ngClass]="{'hide': column.hasPermission !== undefined ?  !column.hasPermission : !hasPermission}">
-                    {{ column.header | translate }}
-                </mat-header-cell>
-            </ng-container>
-            <ng-container *ngIf="column.hasHtml">
-                <mat-cell *matCellDef="let row let i = index;" [ngStyle]="{ 'width': column.size + '%' }"
-                    [ngClass]="{'hide': column.hasPermission !== undefined ?  !column.hasPermission : !hasPermission}">
-                    <app-input [ngClass]="{'fieldCheckbox': column.field.type == 'checkbox'}" [type]="column.field.type"
-                        [val]="row[column.property]" [defaultValue]="column.field.defaultValue"
-                        [options]="column.field.options" [text]="column.field.text"
-                        [placeholder]="column.field.placeholder"
-                        (value)="getvalue($event,i,column.field.type, column.property)">
-                    </app-input>
-                </mat-cell>
-            </ng-container>
-            <ng-container *ngIf="!column.hasHtml">
-                <mat-cell *matCellDef="let row" [ngStyle]="{ 'width': column.size + '%' }"
-                    [ngClass]="{'hide': column.hasPermission !== undefined ?  !column.hasPermission : !hasPermission}">
-                    <app-column-data [val]="row[column.property]"
-                        [type]="column.type === undefined ? undefined : column.type.columnType"
-                        [format]="column.type === undefined ? undefined : column.type.format"
-                        [flag]="column.type === undefined ? undefined : column.type.flag">
-                    </app-column-data>
-                </mat-cell>
-            </ng-container>
-        </ng-container>
-    </ng-container>
-    <mat-header-row *matHeaderRowDef="visibleColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: visibleColumns; let i = index;" class="clickable"
-        [ngClass]="{'highlight': (selectedRowIndex == i)}" (click)="getHighlight(i)">
-    </mat-row>
-</table>
-<mat-paginator class="paginator" (page)="pageChange($event)" *ngIf="hasPagination" [pageSizeOptions]="pageSizeOptions"
-    [length]="numberOfItems" [pageSize]="pageSize"></mat-paginator>
+        </mat-menu>
+        <button class="btn-action-more-vert" mat-icon-button [matMenuTriggerFor]="appMenu">
+            <mat-icon>more_vert</mat-icon>
+        </button>
+    </div>
+    <div [hidden]="!dataSource.empty" style="position: relative;">
+        <div class="no-result" fxLayout fxLayoutAlign="center center">
+            <div class="spinner-container" *ngIf="dataSource.loading$ | async; else notResult">
+                <mat-spinner [diameter]="50"></mat-spinner>
+            </div>
+            <ng-template #notResult>
+                <span>{{noDataText | translate}}</span>
+            </ng-template>
+        </div>
+    </div>
+    <div [hidden]="dataSource.empty">
+        <div class="search-container">
+            <div class="spinner-container" *ngIf="dataSource.loading$ | async">
+                <mat-spinner [diameter]="50"></mat-spinner>
+            </div>
+            <mat-paginator class="paginator" (page)="pageChange($event)" *ngIf="hasPagination"
+                [pageSizeOptions]="pageSizeOptions" [length]="numberOfItems" [pageSize]="pageSize"></mat-paginator>
+            <table mat-table [dataSource]="dataSource"
+                class="search-table table-hover table-striped table-condensed table-bordered table table-responsive"
+                matSort [matSortActive]="sortActiveColumn" [matSortDirection]="sortDefaultDirection"
+                [matSortStart]="sortDefaultDirection" (matSortChange)="sortData($event)" matSortDisableClear>
+                <ng-container *ngFor="let column of columns">
+                    <ng-container [matColumnDef]="column.property">
+                        <ng-container *ngIf="column.property == 'actions'">
+                            <mat-header-cell *matHeaderCellDef [ngStyle]="{ 'width': column.size + '%' }"
+                                [ngClass]="{'hide': visibleColumnActions.length == 0 && !actionsVisible}">
+                                {{ column.header | translate }}
+                            </mat-header-cell>
+                            <mat-cell class="actions-cell" *matCellDef="let row" fxFlexAlign="stretch"
+                                [ngStyle]="{ 'width': column.size + '%' }"
+                                [ngClass]="{'hide': visibleColumnActions.length == 0 && !actionsVisible}">
+                                <button type="button" mat-icon-button [matMenuTriggerFor]="actionsMenu"
+                                    [disabled]="visibleColumnActions.length == 0 && actionsVisible">
+                                    <mat-icon>more_horiz</mat-icon>
+                                </button>
+                                <mat-menu #actionsMenu="matMenu" yPosition="below" xPosition="before">
+                                    <button class="action-list-item" type="button"
+                                        *ngFor="let item of visibleColumnActions" [disabled]="!item.hasPermission"
+                                        (click)="columnActionsButtonClick.emit({name:item.name, item: row})"
+                                        mat-menu-item>
+                                        <mat-icon>{{item.icon}}</mat-icon>
+                                        <span>{{ item.name }}</span>
+                                    </button>
+                                </mat-menu>
+                            </mat-cell>
+                        </ng-container>
+                        <ng-container *ngIf="hasSort">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header
+                                [ngStyle]="{ 'width': column.size + '%' }"
+                                [ngClass]="{'hide': column.hasPermission !== undefined ?  !column.hasPermission : !hasPermission}">
+                                {{ column.header | translate }}
+                            </mat-header-cell>
+                        </ng-container>
+                        <ng-container *ngIf="!hasSort">
+                            <mat-header-cell *matHeaderCellDef [ngStyle]="{ 'width': column.size + '%' }"
+                                [ngClass]="{'hide': column.hasPermission !== undefined ?  !column.hasPermission : !hasPermission}">
+                                {{ column.header | translate }}
+                            </mat-header-cell>
+                        </ng-container>
+                        <ng-container *ngIf="column.hasHtml">
+                            <mat-cell *matCellDef="let row let i = index;" [ngStyle]="{ 'width': column.size + '%' }"
+                                [ngClass]="{'hide': column.hasPermission !== undefined ?  !column.hasPermission : !hasPermission}">
+                                <app-input [ngClass]="{'fieldCheckbox': column.field.type == 'checkbox'}"
+                                    [type]="column.field.type" [val]="row[column.property]"
+                                    [defaultValue]="column.field.defaultValue" [options]="column.field.options"
+                                    [text]="column.field.text" [placeholder]="column.field.placeholder"
+                                    (value)="getvalue($event,i,column.field.type, column.property)">
+                                </app-input>
+                            </mat-cell>
+                        </ng-container>
+                        <ng-container *ngIf="!column.hasHtml">
+                            <mat-cell *matCellDef="let row" [ngStyle]="{ 'width': column.size + '%' }"
+                                [ngClass]="{'hide': column.hasPermission !== undefined ?  !column.hasPermission : !hasPermission}">
+                                <app-column-data [val]="row[column.property]"
+                                    [type]="column.type === undefined ? undefined : column.type.columnType"
+                                    [format]="column.type === undefined ? undefined : column.type.format"
+                                    [flag]="column.type === undefined ? undefined : column.type.flag">
+                                </app-column-data>
+                            </mat-cell>
+                        </ng-container>
+                    </ng-container>
+                </ng-container>
+                <mat-header-row *matHeaderRowDef="visibleColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: visibleColumns; let i = index;" class="clickable"
+                    [ngClass]="{'highlight': (selectedRowIndex == i)}" (click)="getHighlight(i)">
+                </mat-row>
+            </table>
+            <mat-paginator class="paginator" (page)="pageChange($event)" *ngIf="hasPagination"
+                [pageSizeOptions]="pageSizeOptions" [length]="numberOfItems" [pageSize]="pageSize"></mat-paginator>
+        </div>
+    </div>
+</app-title>

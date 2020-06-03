@@ -18,10 +18,14 @@ import { TranslateModule } from '@ngx-translate/core';
 import { GridComponent } from './grid/grid.component';
 import { InputComponent } from './input/input.component';
 import { ColumnDataComponent } from './column-data/column-data.component';
+import { TitleComponent } from './title/title.component';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { MatCardModule } from '@angular/material/card';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 
 @NgModule({
-  declarations: [GridComponent, InputComponent, ColumnDataComponent],
+  declarations: [GridComponent, InputComponent, ColumnDataComponent, TitleComponent],
   imports: [
     MatSortModule,
     MatTableModule,
@@ -38,7 +42,10 @@ import { ColumnDataComponent } from './column-data/column-data.component';
     FormsModule,
     TranslateModule,
     MatTooltipModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    FlexLayoutModule,
+    MatCardModule,
+    MatProgressSpinnerModule
   ],
   exports: [
     GridComponent,

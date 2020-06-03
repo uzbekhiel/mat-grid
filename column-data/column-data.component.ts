@@ -20,8 +20,15 @@ export class ColumnDataComponent {
   }
 
   get valueIsFlag() {
-    return this.flag.items.filter((i: { value: any; }) => i.value === this.val)
-      .map((column: { property: any; }) => column.property).length > 0;
+    if (this.type === ColumnTypeEnum.flag) {
+      console.log(this.flag.items.filter((i: { value: any; }) => i.value === this.val)
+        .map((column: { property: any; }) => column.property).length > 0);
+      return this.flag.items.filter((i: { value: any; }) => i.value === this.val)
+        .map((column: { property: any; }) => column.property).length > 0;
+    }
+    else {
+      return false;
+    }
   }
 
 }

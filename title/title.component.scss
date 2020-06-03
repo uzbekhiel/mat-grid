@@ -1,0 +1,128 @@
+@import "../_var.scss";
+
+.mat-card, .div-card {
+  border: 0 !important;
+  margin: 0 0 20px 0 !important;
+  border-radius: 4px !important;
+  padding: 10px 10px 10px 10px!important;
+  background: #fff !important;
+  position: relative !important;
+  z-index: 10 !important;
+  box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12) !important;
+}
+.icon-list.mat-icon{
+  height:20px !important;
+}
+.box-title-card .mat-icon {
+  color: #106ebe !important;
+ }
+.mat-card-title, .div-card-title {
+  font-family: 'Segoe UISemiBold', Arial, sans-serif !important;
+  font-size: 18px !important;
+  margin: 0 !important;
+  color:#000;
+  line-height: 18px;
+}
+.box-title-card .mat-mini-fab{
+  box-shadow: none !important;
+  width: 26px !important;
+  height: 26px !important;
+  background-color: #106ebe !important;
+}
+
+.box-title{
+  margin-bottom: 10px;
+}
+
+.list {
+  margin-bottom: $padding__page;
+
+  @include mat-elevation(2);
+
+  .list-header {
+    background: $theme-card;
+    padding-left: 0;
+    padding-right: 0;
+    border-bottom: 1px solid $theme-divider;
+    height: 30px;
+
+    .list-name {
+      font-size: 18px;
+      color: $theme-text;
+      padding-right: $padding__page;
+      border-right: 1px solid $theme-divider;
+
+      @include mat-typography-level-to-styles($config, title);
+    }
+
+    .filter-input {
+      padding-left: $padding__page;
+      @include mat-typography-level-to-styles($config, input);
+      width: 20%;
+
+      .filter-input-icon {
+        width: 1.2em;
+        color: $theme-secondary-text;
+        vertical-align: bottom;
+        height: 22px;
+        font-size: 22px;
+      }
+    }
+
+    .column-filter {
+      margin-left: $padding__page;
+      color: $theme-secondary-text;
+    }
+
+    .create {
+      margin-left: $padding__page;
+    }
+  }
+
+  .mat-header-row {
+    background: $theme-app-bar;
+
+    .mat-header-cell .mat-sort-header-button {
+      text-transform: uppercase;
+    }
+  }
+
+  .mat-row {
+
+    &:hover {
+      background: $theme-background-hover;
+    }
+  }
+
+  .mat-cell.image-cell, .mat-header-cell.image-cell {
+    flex: 0;
+    min-width: 35px + $padding__page;
+
+    img {
+      border-radius: 50%;
+      height: 35px;
+      width: 35px;
+      margin-right: $padding__page;
+      vertical-align: middle;
+    }
+  }
+
+  .mat-cell.actions-cell, .mat-header-cell.actions-cell {
+    flex: 0;
+    min-width: 40px;
+    overflow: visible;
+
+    button {
+      color: $theme-icon;
+    }
+  }
+
+  .paginator {
+    display: block;
+    background: $theme-app-bar;
+  }
+
+  .displayNone {
+    display: none !important;
+  }
+}

@@ -27,8 +27,8 @@
                     {{item.text | translate}}</ng-container>
             </span>
             <ng-container *ngIf="!valueIsFlag">
-                <span [ngStyle]="{color: item.color !== undefined ? item.color : '' }">
-                    {{flag.default.text | translate}}
+                <span [ngStyle]="{color: flag.default !== undefined ? flag.default.color : '' }">
+                    {{flag.default !== undefined ? flag.default.text : '' | translate}}
                 </span>
             </ng-container>
         </ng-container>
@@ -38,9 +38,9 @@
                     [matTooltip]="item.text">
                     {{item.icon}}</mat-icon>
             </span>
-            <mat-icon *ngIf="!valueIsFlag" [ngStyle]="{color: item.color !== undefined ? item.color : '' }"
-                [matTooltip]="flag.default.text">
-                {{flag.default.text}}</mat-icon>
+            <mat-icon *ngIf="!valueIsFlag" [ngStyle]="{color: flag.default !== undefined ? flag.default.color : '' }"
+                [matTooltip]="flag.default !== undefined ? flag.default.text : ''">
+                {{flag.default !== undefined ? flag.default.text : ''}}</mat-icon>
         </ng-container>
     </ng-container>
     <ng-container *ngIf="type == columnType.text || type === undefined">
