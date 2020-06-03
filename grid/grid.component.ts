@@ -86,7 +86,6 @@ export class GridComponent<T> implements OnInit {
     if (this.sortedColumns.filter(x => x == event.active).length == 0) {
       this.sortedColumns.push(event.active);
     } else {
-      console.log(event)
       this.sortedData.direction = event.direction;
       this.sortedData.property = event.active;
       this.loadingGridFn.emit({ sort: this.sortedData, paginator: this.paginator });
