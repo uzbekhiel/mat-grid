@@ -32,21 +32,28 @@
             <mat-icon>more_vert</mat-icon>
         </button>
     </div>
-    <div [hidden]="!dataSource.empty" style="position: relative;">
+    <div [hidden]="!ShowNoData()" style="position: relative;">
         <div class="no-result" fxLayout fxLayoutAlign="center center">
-            <div class="spinner-container" *ngIf="dataSource.loading$ | async; else notResult">
-                <mat-spinner [diameter]="50"></mat-spinner>
-            </div>
-            <ng-template #notResult>
+            <ng-container *ngIf="!DataSourceIsArray">
+                <div class="spinner-container" *ngIf="dataSource.loading$ | async; else notResult">
+                    <mat-spinner [diameter]="50"></mat-spinner>
+                </div>
+                <ng-template #notResult>
+                    <span>{{noDataText | translate}}</span>
+                </ng-template>
+            </ng-container>
+            <ng-container *ngIf="DataSourceIsArray">
                 <span>{{noDataText | translate}}</span>
-            </ng-template>
+            </ng-container>
         </div>
     </div>
-    <div [hidden]="dataSource.empty">
+    <div [hidden]="ShowNoData()">
         <div class="search-container">
-            <div class="spinner-container" *ngIf="dataSource.loading$ | async">
-                <mat-spinner [diameter]="50"></mat-spinner>
-            </div>
+            <ng-container *ngIf="!DataSourceIsArray">
+                <div class="spinner-container" *ngIf="dataSource.loading$ | async">
+                    <mat-spinner [diameter]="50"></mat-spinner>
+                </div>
+            </ng-container>
             <mat-paginator class="paginator" (page)="pageChange($event)" *ngIf="hasPagination"
                 [pageSizeOptions]="pageSizeOptions" [length]="numberOfItems" [pageSize]="pageSize"></mat-paginator>
             <table mat-table [dataSource]="dataSource"

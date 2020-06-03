@@ -1,6 +1,6 @@
 <div class="list div-card">
-    <div class="list-header box-title-card" fxLayout="row" fxLayoutAlign="start end">
-        <div class="title" fxFlex="65%" fxLayout="row" fxLayoutAlign="start end">
+    <div class="list-header box-title-card" fxLayout="row" fxLayoutAlign="start end" *ngIf="name != '' || dropMenu">
+        <div class="title" fxFlex="65%" fxLayout="row" fxLayoutAlign="start end" *ngIf="name != ''">
             <mat-icon class=" icon-list">list</mat-icon>
             <div class="div-card-title">{{ name }}</div>
         </div>

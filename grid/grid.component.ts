@@ -4,6 +4,7 @@ import {
 } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { SortOrder } from '../models/sort-order';
+import { GridDataSource } from '../models/grid-data-source.model';
 
 @Component({
   selector: 'mat-grid',
@@ -52,6 +53,10 @@ export class GridComponent<T> implements OnInit {
     }
   }
 
+  get DataSourceIsArray() {
+    return Array.isArray(this.dataSource);
+  }
+
   get visibleColumns() {
     return this.columns.filter(column => column.visible !== undefined ? column.visible : this.isVisible)
       .map(column => column.property);
@@ -64,6 +69,13 @@ export class GridComponent<T> implements OnInit {
     }
     else {
       return [];
+    }
+  }
+  public ShowNoData(): boolean {
+    if (this.DataSourceIsArray) {
+      return (this.dataSource as any).length === 0;
+    } else {
+      return (this.dataSource as any).empty;
     }
   }
 
@@ -95,4 +107,5 @@ export class GridComponent<T> implements OnInit {
   public search(event: any) {
     this.searchData.emit({ text: event });
   }
+
 }
