@@ -66,6 +66,7 @@ Their use is done as follows:
         
 Apart from the flag type, explained later, the other types can receive a format assigned in the `format` property, following the settings for the use of pipes listed in the angular API (see [Pipes API List](https://angular.io/api?type=pipe)).
 Types for texts as lower(to lowercase), upper( to UPPERCASE) and titlecase(to Title Case) don´t need format.
+
 [Common types demo here](https://stackblitz.com/edit/type-example)
 
 The flag type is a special type created specifically for columns that contain enumerated data, such as that of domain tables.
