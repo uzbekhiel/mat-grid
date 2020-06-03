@@ -25,12 +25,14 @@ export class TitleComponent implements OnInit {
     this.columns.forEach(e => {
       e.visible = e.visible === undefined ? true : e.visible;
     });
-    observableFromEvent(this.filter.nativeElement, 'keyup').pipe(
-      distinctUntilChanged(),
-      debounceTime(150))
-      .subscribe(() => {
-        this.filterChange.emit(this.filter.nativeElement.value);
-      });
+    if (this.filter !== undefined) {
+      observableFromEvent(this.filter.nativeElement, 'keyup').pipe(
+        distinctUntilChanged(),
+        debounceTime(150))
+        .subscribe(() => {
+          this.filterChange.emit(this.filter.nativeElement.value);
+        });
+    }
   }
 
   toggleColumnVisibility(column, event) {
