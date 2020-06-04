@@ -85,6 +85,25 @@
                                 </mat-menu>
                             </mat-cell>
                         </ng-container>
+                        <ng-container *ngIf="column.property == 'select'">
+                            <mat-header-cell *matHeaderCellDef [ngStyle]="{ 'width': column.size + '%' }">
+                                <app-input [ngClass]="{'fieldCheckbox': column.field.type == 'checkbox'}"
+                                    [type]="column.field.type" [val]="selectedColumns.length > 0"
+                                    [defaultValue]="column.field.defaultValue" [options]="column.field.options"
+                                    [text]="column.field.text" [placeholder]="column.field.placeholder"
+                                    (value)="getvalue($event,i,column.field.type, column.property)">
+                                </app-input>
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let row let i = index;" [ngStyle]="{ 'width': column.size + '%' }"
+                                [ngClass]="{'hide': column.hasPermission !== undefined ?  !column.hasPermission : !hasPermission}">
+                                <app-input [ngClass]="{'fieldCheckbox': column.field.type == 'checkbox'}"
+                                    [type]="column.field.type" [val]="getSelectValue(row)"
+                                    [defaultValue]="column.field.defaultValue" [options]="column.field.options"
+                                    [text]="column.field.text" [placeholder]="column.field.placeholder"
+                                    (value)="getvalue($event,i,column.field.type, column.property)">
+                                </app-input>
+                            </mat-cell>
+                        </ng-container>
                         <ng-container *ngIf="hasSort">
                             <mat-header-cell *matHeaderCellDef mat-sort-header
                                 [ngStyle]="{ 'width': column.size + '%' }"

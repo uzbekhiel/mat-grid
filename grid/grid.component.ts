@@ -1,10 +1,9 @@
 import {
-  Component, OnInit, Input, EventEmitter, Output, ViewChildren, QueryList, OnChanges,
-  ComponentFactoryResolver
+  Component, OnInit, Input, EventEmitter, Output, ViewChildren, QueryList
 } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { SortOrder } from '../models/sort-order';
-import { GridDataSource } from '../models/grid-data-source.model';
+import { FieldTypeEnum } from '../enums/field-types.enum';
 
 @Component({
   selector: 'mat-grid',
@@ -16,6 +15,7 @@ export class GridComponent<T> implements OnInit {
   public selectedRowIndex: number;
   public sortedData: SortOrder = new SortOrder();
   private sortedColumns = [];
+  private selectedColumns = [];
   private isVisible = true;
   public hasPermission = true;
   @Input() sortDefaultDirection = 'asc';
@@ -29,6 +29,8 @@ export class GridComponent<T> implements OnInit {
   @Input() hasSort = false;
   @Input() dropMenu = true;
   @Input() searchVisible = false;
+  @Input('selection') hasSelectionColumn = false;
+  @Input() selectionPosition = 'first' || 'end' || '';
   @Input() hasPagination = null;
   @Input() title = '';
   @Input() noDataText = '';
@@ -39,17 +41,28 @@ export class GridComponent<T> implements OnInit {
   @Output() columnActionsButtonClick: EventEmitter<any> = new EventEmitter();
   @Output() loadingGridFn = new EventEmitter();
   @Output() columnValue = new EventEmitter();
+  @Output() selectedRows = new EventEmitter();
   @Output('search') searchData = new EventEmitter();
 
   displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
 
   @ViewChildren(MatPaginator) paginator: QueryList<MatPaginator>;
 
-  constructor(private componentFactoryResolver: ComponentFactoryResolver) { }
+  constructor() { }
 
   ngOnInit() {
     if (this.sortActiveColumn != '') {
       this.sortedColumns.push(this.sortActiveColumn);
+    }
+    if (this.hasSelectionColumn) {
+      switch (this.selectionPosition) {
+        case 'end':
+          this.columns.push({ header: 'Checkbox', property: 'select', size: 5, hasHtml: true, field: { type: FieldTypeEnum.checkbox } });
+          break;
+        default:
+          this.columns.unshift({ header: 'Checkbox', property: 'select', size: 5, hasHtml: true, field: { type: FieldTypeEnum.checkbox } });
+          break;
+      }
     }
   }
 
@@ -84,8 +97,39 @@ export class GridComponent<T> implements OnInit {
   }
 
   public getvalue(event: any, index: number, type: string, property: string) {
-    this.dataSource[index][property] = event;
-    this.columnValue.emit({ index, value: event, type, property, item: this.dataSource[index] });
+    if (this.DataSourceIsArray) {
+      if (property === 'select') {
+        if (index === undefined && event) {
+          (this.dataSource as any).forEach(e => {
+            this.selectedColumns.push(e);
+          });
+        } else if (index === undefined && !event) {
+          this.selectedColumns = [];
+        } else {
+          this.selectedColumns.push(this.dataSource[index]);
+        }
+      } else {
+        this.dataSource[index][property] = event;
+        this.columnValue.emit({ property, item: this.dataSource[index] });
+        this.selectedRows.emit({ rows: this.selectedColumns });
+      }
+    } else {
+      if (property === 'select') {
+        if (index === undefined && event) {
+          (this.dataSource as any).data.forEach(e => {
+            this.selectedColumns.push(e);
+          });
+        } else if (index === undefined && !event) {
+          this.selectedColumns = [];
+        } else {
+          this.selectedColumns.push((this.dataSource as any).data[index]);
+        }
+      } else {
+        (this.dataSource as any).data[index][property] = event;
+        this.columnValue.emit({ property, item: (this.dataSource as any).data[index] });
+        this.selectedRows.emit({ rows: this.selectedColumns });
+      }
+    }
   }
 
   public pageChange(event: any) {
@@ -106,6 +150,10 @@ export class GridComponent<T> implements OnInit {
 
   public search(event: any) {
     this.searchData.emit({ text: event });
+  }
+
+  public getSelectValue(row: any): boolean {
+    return this.selectedColumns.filter(a => a === row).length > 0;
   }
 
 }
