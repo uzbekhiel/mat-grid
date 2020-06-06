@@ -5,8 +5,8 @@ import { Type } from './type.model';
 export interface GridColumns {
     header: string;
     property: string;
-    type: Type;
-    size: number;
+    type?: Type;
+    size?: number;
     visible?: boolean;
     hasPermission?: boolean;
     hasHtml?: boolean;

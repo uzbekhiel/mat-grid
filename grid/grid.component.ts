@@ -4,6 +4,7 @@ import {
 import { MatPaginator } from '@angular/material/paginator';
 import { SortOrder } from '../models/sort-order';
 import { FieldTypeEnum } from '../enums/field-types.enum';
+import { GridColumns } from '../models/grid-columns.model';
 
 @Component({
   selector: 'mat-grid',
@@ -84,12 +85,17 @@ export class GridComponent<T> implements OnInit {
       return [];
     }
   }
+
   public ShowNoData(): boolean {
     if (this.DataSourceIsArray) {
       return (this.dataSource as any).length === 0;
     } else {
       return (this.dataSource as any).empty;
     }
+  }
+
+  public showOnOrganizer(column: GridColumns): boolean {
+    return column.hasPermission !== undefined ? (!column.hasPermission || column.property === 'actions') : (!this.hasPermission || column.property === 'actions');
   }
 
   public getHighlight(id) {
